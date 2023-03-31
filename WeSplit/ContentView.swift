@@ -16,6 +16,8 @@ struct ContentView: View {
 
     let tipPercentages: [Int] = Array(0 ... 100)
 
+    let currency: FloatingPointFormatStyle<Double>.Currency = .currency(code: Locale.current.currency?.identifier ?? "BDT")
+
     var totalAmount: Double {
         let tipSelection = Double(tipPercentage)
 
@@ -41,8 +43,7 @@ struct ContentView: View {
             Form {
                 Section {
                     TextField(
-                        "Enter Amount", value: $billAmount, format:
-                        .currency(code: Locale.current.currency?.identifier ?? "BDT")
+                        "Enter Amount", value: $billAmount, format: currency
                     )
                     .keyboardType(.decimalPad)
                     .focused($amountIsFocused)
@@ -66,13 +67,13 @@ struct ContentView: View {
                 }
 
                 Section {
-                    Text(totalAmount, format: .currency(code: Locale.current.currency?.identifier ?? "BDT"))
+                    Text(totalAmount, format: currency)
                 } header: {
                     Text("Total amount: ")
                 }
 
                 Section {
-                    Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "BDT"))
+                    Text(totalPerPerson, format: currency)
                 } header: {
                     Text("Amount per person: ")
                 }
