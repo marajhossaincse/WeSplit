@@ -8,19 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var totalAmount = 0.0
+    @State private var billAmount = 0.0
     @State private var numberOfPeople = 2
     @State private var tipPercentage = 20
 
     @FocusState private var amountIsFocused: Bool
 
     let tipPercentages = [10, 15, 20, 25, 0]
+
+    var totalAmount: Double {
+        let tipSelection = Double(tipPercentage)
+
+        let tipValue = billAmount/100 * tipSelection
+        let grandTotal = billAmount + tipValue
+
+        return grandTotal
+    }
+
     var totalPerPerson: Double {
         let peopleCount = Double(numberOfPeople + 2)
         let tipSelection = Double(tipPercentage)
 
-        let tipValue = totalAmount/100 * tipSelection
-        let grandTotal = totalAmount + tipValue
+        let tipValue = billAmount/100 * tipSelection
+        let grandTotal = billAmount + tipValue
 
         let amountPerPerson = grandTotal/peopleCount
         return amountPerPerson
@@ -31,7 +41,7 @@ struct ContentView: View {
             Form {
                 Section {
                     TextField(
-                        "Enter Amount", value: $totalAmount, format:
+                        "Enter Amount", value: $billAmount, format:
                         .currency(code: Locale.current.currency?.identifier ?? "BDT")
                     )
                     .keyboardType(.decimalPad)
@@ -53,6 +63,12 @@ struct ContentView: View {
                     .pickerStyle(.segmented)
                 } header: {
                     Text("How much tip would you like to leave?")
+                }
+
+                Section {
+                    Text(totalAmount, format: .currency(code: Locale.current.currency?.identifier ?? "BDT"))
+                } header: {
+                    Text("Total amount: ")
                 }
 
                 Section {
